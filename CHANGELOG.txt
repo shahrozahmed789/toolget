@@ -1,0 +1,17 @@
+PIN RESEARCH STUDIO v0.3
+
+Added:
+- Live Pinterest keyword-to-Pin search via AnyAPI Netlify Function.
+- Thumbnail cards with title, description, creator, board, source link and saveCount when supplied.
+- Cursor-based Load more Pins pagination; each page is a separate API request.
+- Private access code gate for the server-side live Pinterest search.
+- ANYAPI_KEY remains in Netlify environment variables and is never exposed in browser JavaScript.
+- Setup, cost, data limitations and privacy guidance updated in README.md.
+
+Existing modules remain: Keyword Explorer, imported/manual data library, CSV import/export, Competitor Lab, Niche Radar, optional authorized Pinterest Trends API panel, Etsy modules (locked by default), backup/restore.
+
+Limitations:
+- Live Pinterest Search requires a deployed Netlify site and AnyAPI account/key.
+- Available fields depend on the upstream result: saveCount may be missing; repins, dates, account age and exact keyword volume are not fabricated.
+- AnyAPI is a third-party provider, not Pinterest. Users must review applicable provider/platform terms.
+- Etsy automated analytics remain locked unless the required written authorization is in place.
