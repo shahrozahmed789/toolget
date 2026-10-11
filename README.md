@@ -1,11 +1,11 @@
-# Pin Research Studio v0.3 — Private Pinterest + Etsy research workspace
+# Pin Research Studio v0.4 — Private Pinterest + Etsy research workspace
 
 This is a new project and does not modify the existing `rankwise` repository. It is an independent private-use tool and is not affiliated with Pinterest, Etsy, Pin Inspector, PinClicks, or AnyAPI.
 
 ## What's included
 
 - Keyword Explorer with local candidate generation, filtering, editable rows, CSV import/export.
-- **Live Pinterest keyword search through AnyAPI**: result thumbnails, title, description, source URL, creator, board, save count when returned, and cursor-based "Load more Pins".
+- **Live Pinterest keyword search through AnyAPI** (v0.4 includes robust handling for both wrapped and direct AnyAPI response formats): result thumbnails, title, description, source URL, creator, board, save count when returned, and cursor-based "Load more Pins".
 - Multi-platform Search, saved result library, CSV import/export and local thumbnail cards.
 - Competitor Lab for saving competitor URLs and notes, plus original content outline generation from authorized/imported metadata.
 - Niche Radar for classifying observed history as rising, stable, cooling or declining.

@@ -1,3 +1,7 @@
+Pin Research Studio v0.4
+- Fixed AnyAPI REST response-envelope parsing: supports both output.data.items and direct data.items responses.
+- Preserves nextCursor, provider billing cost when returned, and truncation metadata.
+
 PIN RESEARCH STUDIO v0.3
 
 Added:
