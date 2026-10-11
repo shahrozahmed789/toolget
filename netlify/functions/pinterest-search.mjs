@@ -57,17 +57,30 @@ export default async (request) => {
       return json({ error: `AnyAPI Pinterest search returned HTTP ${response.status}.`, detail: String(providerMessage).slice(0, 500) }, response.status >= 500 ? 502 : response.status);
     }
 
-    // Preserve source-provided fields and pagination. Do not fabricate missing metrics.
-    const data = payload?.data && typeof payload.data === 'object' ? payload.data : {};
+    // AnyAPI REST responses commonly wrap the normalized API result in `output`:
+    // { output: { found, data: { items, nextCursor } }, provider, costUsd, items }.
+    // Some playground/sample responses expose { found, data } directly. Support both.
+    // Preserve all source fields and never fabricate metrics.
+    const result = payload?.output && typeof payload.output === 'object'
+      ? payload.output
+      : (payload?.result && typeof payload.result === 'object' ? payload.result : payload);
+    const data = result?.data && typeof result.data === 'object' ? result.data : {};
+    const items = Array.isArray(data.items)
+      ? data.items
+      : (Array.isArray(result?.items) ? result.items : (Array.isArray(payload?.items) ? payload.items : []));
+    const nextCursor = data.nextCursor ?? result?.nextCursor ?? payload?.nextCursor ?? null;
     return json({
-      found: Boolean(payload?.found ?? (Array.isArray(data.items) && data.items.length)),
+      found: Boolean(result?.found ?? payload?.found ?? items.length),
       data: {
         ...data,
-        items: Array.isArray(data.items) ? data.items : [],
-        nextCursor: typeof data.nextCursor === 'string' && data.nextCursor ? data.nextCursor : null
+        items,
+        nextCursor: typeof nextCursor === 'string' && nextCursor ? nextCursor : null,
+        ...(data._truncated ? { _truncated: data._truncated } : {})
       },
-      retrievedAt: payload?.retrievedAt || new Date().toISOString(),
-      provider: 'AnyAPI · Pinterest Search'
+      retrievedAt: result?.retrievedAt || payload?.retrievedAt || new Date().toISOString(),
+      provider: payload?.provider || 'AnyAPI · Pinterest Search',
+      ...(typeof payload?.costUsd === 'number' ? { costUsd: payload.costUsd } : {}),
+      ...(typeof payload?.items === 'number' ? { billedItems: payload.items } : {})
     });
   } catch (error) {
     const message = String(error?.message || error || 'Unknown network error').slice(0, 300);
